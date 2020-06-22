@@ -1,12 +1,7 @@
 import pytest
 import requests
 from jsonschema import validate
-
-
-@pytest.fixture
-def base_url():
-    url = 'https://dog.ceo/api/breeds'
-    return url
+import json
 
 
 def test_status_code_ok_for_breeds(base_url):
@@ -19,38 +14,18 @@ def test_status_code_not_ok_for_breeds(base_url):
     assert r.status_code == 404
 
 
-def test_jsonschema(base_url):
+def test_jsonschema(base_url, schema):
     r = requests.get(base_url + '/image/random')
-    schema = {
-        'type': 'object',
-        'properties': {
-            'message': {'type': 'string'},
-            'status': {'type': 'string'}
-        },
-    }
     validate({'status': 'success'}, schema=schema)
 
 
+def test_subbreed(base_url, schema_subbreed):
+    r = requests.get(base_url + '/hound/list')
+    validate({'status': 'success', 'message': ['afghan']}, schema=schema_subbreed)
 
 
-
-
-
-# def test_images_for_breeds()
-
-
-# schema = {
-#     'type': 'object',
-#     'properties': {
-#         'message': {'type': 'string'},
-#         'status': {'type': 'string'}
-#     },
-#     'required': ['message', 'status']
-# }
-#
-# validate(instance=res.json(), schema=schema)
-
-{
-    "message": "https://images.dog.ceo/breeds/malinois/n02105162_4719.jpg",
-    "status": "success"
-}
+def test_number_of_image(base_url):
+    r = requests.get(base_url + '/image/random/3')
+    item_dict = json.loads(r.text)
+    number_of_images = len(item_dict['message'])
+    assert number_of_images == 3
