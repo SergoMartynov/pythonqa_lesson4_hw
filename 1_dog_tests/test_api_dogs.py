@@ -1,7 +1,6 @@
-import pytest
+import json
 import requests
 from jsonschema import validate
-import json
 
 
 def test_status_code_ok_for_breeds(base_url):
