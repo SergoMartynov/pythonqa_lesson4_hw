@@ -6,6 +6,30 @@ def base_url():
     url = 'https://api.openbrewerydb.org/breweries'
     return url
 
+@pytest.fixture()
+def schema_id0():
+    schema = {
+        'type': 'object',
+        'properties': {
+            'message': {'type': 'string',
+                       'enum': ["Couldn't find Brewery with 'id'=0"]}
+            },
+    }
+    return schema
+
+
+@pytest.fixture()
+def schema_id1():
+    schema = {
+        'type': 'object',
+        'properties': {
+            'id': {'type': 'integer',
+                       'enum': [1]}
+            },
+    }
+    return schema
+
+
 @pytest.fixture
 def schema():
     schema = {

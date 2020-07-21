@@ -14,12 +14,12 @@ def test_status_code_not_ok_for_breeds(base_url):
 
 
 def test_jsonschema(base_url, schema):
-    r = requests.get(base_url + '/image/random')
+    requests.get(base_url + '/image/random')
     validate({'status': 'success'}, schema=schema)
 
 
 def test_subbreed(base_url, schema_subbreed):
-    r = requests.get(base_url + '/hound/list')
+    requests.get(base_url + '/hound/list')
     validate({'status': 'success', 'message': ['afghan']}, schema=schema_subbreed)
 
 
