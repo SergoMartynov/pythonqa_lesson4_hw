@@ -1,32 +1,25 @@
 import pytest
-import requests
 
 
 def pytest_addoption(parser):
-    parser.addoption(
-        "--url",
-        default="https://ya.ru/",
-        choices=["https://ya.ru/", "https://ya.ru/123"],
-        help="This is requested url"
-    )
+    parser.addoption('--url',
+                     help='define url',
+                     default='https://ya.ru/',
+                     required=False)
 
-    parser.addoption(
-        "--status_code",
-        default="200",
-        choices=["200", "404"],
-        help="Response status code"
-    )
+    parser.addoption('--status_code',
+                     type='int',
+                     help='define the status code',
+                     default=200,
+                     choices=[200, 404],
+                     required=False)
 
 
 @pytest.fixture
 def url(request):
-    return request.config.getoption("--url")
+    return request.config.getoption('--url')
 
 
 @pytest.fixture
-def code(request):
-    m = request.config.getoption("--status_code")
-    if m == '200':
-        return requests.status_codes
-    elif m == '404':
-        return requests.status_codes
+def my_status_code(request):
+    return request.config.getoption('--status_code')
